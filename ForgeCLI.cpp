@@ -1,4 +1,4 @@
-
+﻿
 #include <iostream>
 #include <filesystem>
 #include <fstream>
@@ -116,6 +116,48 @@ int main() {
 
 		mainFile.close();
 		std::cout << "generate src/main.cpp successfully.\n";
+
+		std::filesystem::path readmePath = projectPath / "README.md";
+		std::ofstream readmeFile(readmePath);
+
+		if (!readmeFile) {
+			std::cout << "Error: Could not create README.md\n";
+			return 1;
+		}
+		//Title
+		readmeFile << "# " << projectName << "\n\n";
+
+		//Description based on title
+		if (buildType == 1) {
+			readmeFile << "A C++ console application generated using ForgeCLI.\n\n";
+			return 1;			
+		}
+		else if (buildType == 2) {
+			readmeFile << "A C++ game prototype generated using ForgeCLI.\n\n";
+		}
+		else {
+			readmeFile << "A C++ developer tool generated using ForgetCLI.\n\n";
+		}
+
+		//Structure section
+		readmeFile << "## Project Structure\n";
+		readmeFile << "```\n";
+		readmeFile << projectName << "/\n";
+		readmeFile << "├── src/\n";
+		readmeFile << "│   └── main.cpp\n";
+		readmeFile << "├── include/\n";
+
+		if (buildType == 2) {
+			readmeFile << "├── assets/\n";
+		}
+		readmeFile << "└── README.md\n";
+		readmeFile << "```\n\n";
+
+		//Footer
+		readmeFile << "Generated with **ForgeCLI**.\n";
+
+		readmeFile.close();
+		std::cout << "Generated README.md successfully.\n";
 
 	return 0;
 }
