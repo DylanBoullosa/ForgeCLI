@@ -51,7 +51,71 @@ int main() {
 				std::cout << "Project name cannot be empty\n";
 			}
 		}
+		//Create src/, include/, assets/
+		std::filesystem::path projectPath = projectName;
+		std::filesystem::create_directory(projectPath);
 
+		std::filesystem::create_directory(projectPath / "src");
+		std::filesystem::create_directory(projectPath / "include");
+
+		if (buildType == 2) {
+			std::filesystem::create_directory(projectPath / "assets");
+		}
+		std::cout << "Project structure created successfully\n";
+
+		// Generate src/main.cpp
+		std::filesystem::path mainCppPath = projectPath / "src" / "main.cpp";
+		std::ofstream mainFile(mainCppPath);
+
+		if (!mainFile) {
+			std::cout << "Error: Could not create main.cpp\n";
+			return 1;
+		}
+		//Console application	
+		if (buildType == 1) {
+			mainFile <<
+				"#include <iostream>\n\n"
+				"int main(){\n"
+				"     std::cout << \"Hello from your C++ Console Application!\" << std::endl;\n "
+				"     return 0;\n"
+				"}\n";
+		}
+
+		//Game Prototype
+		if (buildType == 2) {
+			mainFile <<
+				"include <iostream<\n\n"
+				"void init();\n"
+				"void gameLoop();\n"
+				"void shutdown();\n\n"
+				"int main() {\n"
+				"    init();\n"
+				"    gameLoop();\n"
+				"    shutdown();\n"
+				"    return 0;\n"
+				"}\n\n"
+				"void init() {\n"
+				"    std::cout << \"Initializing game...\" << std::endl;\n"
+				"}\n\n"
+				"void gameLoop() {\n"
+				"    std::cout << \"Running game loop...\" << std::endl;\n"
+				"}\n\n"
+				"void shutdown() {\n"
+				"    std::cout << \"Shutting down game.\" << std::endl;\n"
+				"}\n";
+		}
+		//Developer Tool
+		else {
+			mainFile <<
+				"#include <iostream>\n\n"
+				"int main(int argc, char* argv[]) {\n"
+				"    std::cout << \"Developer tool started.\" << std::endl;\n"
+				"    return 0;\n"
+				"}\n";
+		}
+
+		mainFile.close();
+		std::cout << "generate src/main.cpp successfully.\n";
 
 	return 0;
 }
