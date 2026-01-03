@@ -69,7 +69,6 @@ int main() {
 
 		if (!mainFile) {
 			std::cout << "Error: Could not create main.cpp\n";
-			return 1;
 		}
 		//Console application	
 		if (buildType == 1) {
@@ -82,9 +81,9 @@ int main() {
 		}
 
 		//Game Prototype
-		if (buildType == 2) {
+		else if (buildType == 2) {
 			mainFile <<
-				"include <iostream<\n\n"
+				"#include <iostream>\n\n"
 				"void init();\n"
 				"void gameLoop();\n"
 				"void shutdown();\n\n"
@@ -121,43 +120,105 @@ int main() {
 		std::ofstream readmeFile(readmePath);
 
 		if (!readmeFile) {
-			std::cout << "Error: Could not create README.md\n";
-			return 1;
-		}
-		//Title
-		readmeFile << "# " << projectName << "\n\n";
-
-		//Description based on title
-		if (buildType == 1) {
-			readmeFile << "A C++ console application generated using ForgeCLI.\n\n";
-			return 1;			
-		}
-		else if (buildType == 2) {
-			readmeFile << "A C++ game prototype generated using ForgeCLI.\n\n";
+			std::cout << "Warning: Could not create README.md\n";
 		}
 		else {
-			readmeFile << "A C++ developer tool generated using ForgetCLI.\n\n";
+			readmeFile << "# " << projectName << "\n\n";
+
+			if (buildType == 1) {
+				readmeFile << "A C++ console application generated using ForgeCLI.\n\n";
+			}
+			else if (buildType == 2) {
+				readmeFile << "A C++ game prototype generated using ForgeCLI.\n\n";
+			}
+			else {
+				readmeFile << "A C++ developer tool generated using ForgeCLI.\n\n";
+			}
+
+			readmeFile << "## Project Structure\n";
+			readmeFile << "```\n";
+			readmeFile << projectName << "/\n";
+			readmeFile << "├── src/\n";
+			readmeFile << "│   └── main.cpp\n";
+			readmeFile << "├── include/\n";
+
+			if (buildType == 2) {
+				readmeFile << "├── assets/\n";
+			}
+
+			readmeFile << "├── README.md\n";
+			readmeFile << "└── .gitignore\n";
+			readmeFile << "```\n\n";
+
+			readmeFile << "Generated with **ForgeCLI**.\n";
+
+			readmeFile.close();
+			std::cout << "Generated README.md successfully.\n";
 		}
 
-		//Structure section
-		readmeFile << "## Project Structure\n";
-		readmeFile << "```\n";
-		readmeFile << projectName << "/\n";
-		readmeFile << "├── src/\n";
-		readmeFile << "│   └── main.cpp\n";
-		readmeFile << "├── include/\n";
+		//Generate .gitignore
+		std::filesystem::path gitignorePath = projectPath / ".gitignore";
+		std::ofstream gitignoreFile(gitignorePath);
+
+		if (!gitignoreFile) {
+			std::cout << "Warning: Could not create .gitignore\n";
+		}
+		else {
+			gitignoreFile <<
+				"# Build output\n"
+				"build/\n"
+				"*.exe\n"
+				"*.out\n"
+				"*.o\n\n"
+				"# IDE files\n"
+				".vs/\n"
+				"*.vcxproj*\n"
+				"*.sln\n\n"
+				"# OS files\n"
+				".DS_Store\n"
+				"Thumbs.db\n";
+
+			gitignoreFile.close();
+			std::cout << "Generated .gitignore successfully.\n";
+		}
+
+		//Summary output
+		std::cout << "\n==============================\n";
+		std::cout << "ForgeCLI Complete!\n";
+		std::cout << "================================\n";
+
+		std::cout << "Project created: " << projectName << "\n";
+		std::cout << "Project type: ";
+
+		if (buildType == 1) {
+			std::cout << "C++ Console Application\n";
+		}
+		else if (buildType == 2) {
+			std::cout << "C++ Game Prototype\n";
+		}
+		else {
+			std::cout << "C++ Developer Tool\n";
+		}
+
+		std::cout << "\nGenerated structure:\n";
+		std::cout << projectName << "/\n";
+		std::cout << "├── src/\n";
+		std::cout << "│   └── main.cpp\n";
+		std::cout << "├── include/\n";
 
 		if (buildType == 2) {
-			readmeFile << "├── assets/\n";
+			std::cout << "├── assets/\n";
 		}
-		readmeFile << "└── README.md\n";
-		readmeFile << "```\n\n";
 
-		//Footer
-		readmeFile << "Generated with **ForgeCLI**.\n";
+		std::cout << "├── README.md\n";
+		std::cout << "└── .gitignore\n\n";
 
-		readmeFile.close();
-		std::cout << "Generated README.md successfully.\n";
+		std::cout << "Next steps:\n";
+		std::cout << "- Open the project folder in your editor\n";
+		std::cout << "- Start coding in src/main.cpp\n";
+		std::cout << "- Initialize git if needed\n\n";
+
+		std::cout << "Good luck!\n";
 
 	return 0;
 }
