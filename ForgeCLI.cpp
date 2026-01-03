@@ -19,7 +19,7 @@ int main() {
 
 	int buildType;
 	std::cin >> buildType;
-
+	   
 	while (buildType < 1 || buildType > 3) {
 		std::cout << "Invalid choice> Please Select 1,2 or 3: \n";
 		std::cin >> buildType;
@@ -181,7 +181,19 @@ int main() {
 			gitignoreFile.close();
 			std::cout << "Generated .gitignore successfully.\n";
 		}
+		//git initialization
+		char gitChoice;
+		std::cout << "Initialize git repository? (y/n): ";
+		std::cin >> gitChoice;
 
+		if (gitChoice == 'y' || gitChoice == 'Y') {
+			std::string command = "cd \"" + projectName + "\" && git init";
+			system(command.c_str());
+			std::cout << "Git repository initialized.\n";
+		}
+		else {
+			std::cout << "Skipped git initialization.\n";
+		}
 		//Summary output
 		std::cout << "\n==============================\n";
 		std::cout << "ForgeCLI Complete!\n";
